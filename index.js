@@ -55,7 +55,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
   while (videos.size != 2){
       await getRandomVideo()
       .then((result) => {
-        videos.add(result);
+        videos.add(result.url);
       })
       .catch((err) => {
         console.log(err);
