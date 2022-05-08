@@ -68,9 +68,16 @@ nextButton.addEventListener("click", () => {
   if(!hasSelected){
     alert("Please select a video!"); 
   } else {
+    /*Send post request to insert pref into database
+    Set window location if max videos have been reached,
+    Reload otherwise */
     sendPostRequest("/insertPref", ratings)
     .then((result) => {
-      window.location.reload();
+      if(result == "Pick winner"){
+        window.location = "winner.html";
+      } else {
+        window.location.reload();
+      }
     })
     .catch((err) =>{
       console.log(err);

@@ -73,7 +73,7 @@ app.post("/insertPref", async (req, res, next) => {
   checkAndInsert(req.body)
   .then((result) => {
     console.log(result);
-    res.send("Item inserted");
+    res.send(result);
   })
   .catch((err) => {
     console.log(err);
@@ -119,11 +119,11 @@ async function getRandomVideo(){
 
 async function checkAndInsert(ratings){
   let prefTableContents = await getAllPrefs();
-  if (prefTableContents.length < 15){
+  if (prefTableContents.length < 1){
     await insertPreference(ratings.better, ratings.worse);
-    return "Success! Returing from checkAndInsert";
+    return "Continue";
   } else {
-    response.send("Preference table is full.");
+    return "Pick winner";
   }
 }
 
