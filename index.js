@@ -51,7 +51,6 @@ app.get("/getTwoVideos", async (req, res, next) => {
   console.log("Server recieved GET request at /getTwoVideos");
   
   let videos = new Set();
-  console.log("Before:", videos);
   while (videos.size != 2){
       await getRandomVideo()
       .then((result) => {
@@ -61,7 +60,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
         console.log(err);
       });
   }
-  console.log("After:", videos);
+  console.log("Videos:", videos);
   const twoVideos = Array.from(videos);
   res.json(twoVideos);
 });
