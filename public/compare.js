@@ -5,7 +5,7 @@ let videoElmts = document.getElementsByClassName("tiktokDiv");
 let reloadButtons = document.getElementsByClassName("reload");
 let heartButtons = document.querySelectorAll("div.heart");
 let nextButton = document.getElementById("next");
-
+let urlData = [];
 for (let i=0; i<2; i++) {
   let reload = reloadButtons[i]; 
   reload.addEventListener("click", function() { 
@@ -19,7 +19,8 @@ for (let i=0; i<2; i++) {
 sendGetRequest("/getTwoVideos")
 .then((result) => {
   for (let i=0; i<2; i++) {
-    addVideo(result[i],videoElmts[i]);
+    addVideo(result[i].split('~')[0], videoElmts[i]);
+    urlData.push(result[i]);
   }
   
   // load the videos after the names are pasted in! 
@@ -49,19 +50,33 @@ nextButton.addEventListener("click", () => {
 
   //User should not be able to click next if none of them are of class "heart"
 
-  
-  let data = {};
-  sendPostRequest("/insertPref", data)
-  .then((result) => {
-    window.location.reload();
-  })
-  .catch((err) =>{
-    console.log(err);
-  });
-});
-
-
-
-
+  let hasSelected = false;
+  let ratings = {
 
     
+  };
+  heartButtons.forEach(heart => {
+    if(heart.className == "heart"){
+      hasSelected = true;
+      console.log(urlData);
+      ratings.better = Number(urlData[heart.id].split('~')[1]);
+      ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~')[1]); //BITWISE NOT
+    } 
+  });
+
+  console.log(ratings);
+
+
+  //User must select before continuing
+  if(!hasSelected){
+    alert("Please select a video!"); 
+  } else {
+    sendPostRequest("/insertPref", ratings)
+    .then((result) => {
+      window.location.reload();
+    })
+    .catch((err) =>{
+      console.log(err);
+    });
+  }
+});

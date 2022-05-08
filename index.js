@@ -54,7 +54,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
   while (videos.size != 2){
       await getRandomVideo()
       .then((result) => {
-        videos.add(result.url);
+        videos.add(result.url+"~"+result.rowIdNum);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +62,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
   }
   console.log("Videos:", videos);
   const twoVideos = Array.from(videos);
-  res.json(twoVideos);
+  res.json(twoVideos); //Return array with ~(rowIdNum) appended on each video
 });
 
 app.get("/getWinner", async function(req, res) {
