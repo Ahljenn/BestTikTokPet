@@ -51,20 +51,17 @@ nextButton.addEventListener("click", () => {
   //User should not be able to click next if none of them are of class "heart"
 
   let hasSelected = false;
-  let ratings = {
-
-    
-  };
+  let ratings = {};
   heartButtons.forEach(heart => {
     if(heart.className == "heart"){
       hasSelected = true;
-      console.log(urlData);
+      // console.log(urlData);
       ratings.better = Number(urlData[heart.id].split('~')[1]);
       ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~')[1]); //BITWISE NOT
     } 
   });
 
-  console.log(ratings);
+  // console.log(ratings);
 
 
   //User must select before continuing

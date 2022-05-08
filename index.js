@@ -65,6 +65,21 @@ app.get("/getTwoVideos", async (req, res, next) => {
   res.json(twoVideos); //Return array with ~(rowIdNum) appended on each video
 });
 
+
+//Send post request for user preference after selecting video
+app.post("/insertPref", async (req, res, next) => {
+  console.log("Server recieved POST request at /insertPref");
+  console.log("User ratings:", req.body);
+  checkAndInsert(req.body)
+  .then((result) => {
+    console.log(result);
+    res.send("Item inserted");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
 app.get("/getWinner", async function(req, res) {
   console.log("getting winner");
   try {
@@ -79,16 +94,6 @@ app.get("/getWinner", async function(req, res) {
     res.status(500).send(err);
   } 
 });
-
-//Send post request for user preference after selecting video
-app.post("/insertPref", async (req, res, next) => {
-  console.log("Server recieved POST request at /insertPref");
-  
-});
-
-
-
-
 
 
 
@@ -108,8 +113,43 @@ const listener = app.listen(3000, function () {
 });
 
 async function getRandomVideo(){
-  const sql = `select * from VideoTable url order by RANDOM();`;
+  const sql = `SELECT * FROM VideoTable url ORDER BY RANDOM();`;
   return await db.get(sql);
+}
+
+async function checkAndInsert(ratings){
+  let prefTableContents = await getAllPrefs();
+  if (prefTableContents.length < 15){
+    await insertPreference(ratings.better, ratings.worse);
+    return "Success! Returing from checkAndInsert";
+  } else {
+    response.send("Preference table is full.");
+  }
+}
+
+// gets preferences out of preference table
+async function getAllPrefs() {
+  const dumpCmd = "SELECT * from PrefTable";
+  
+  try {
+    let prefs = await db.all(dumpCmd);
+    return prefs;
+  } catch(err) {
+    console.log("pref dump error", err);
+  }
+}
+
+// inserts a preference into the database
+async function insertPreference(i,j) {
+
+  // SQL command we'll need
+const insertCmd = "INSERT INTO PrefTable (better,worse) values (?, ?)";
+  
+   try {
+    await db.run(insertCmd, [i,j]);
+  } catch(error) {
+    console.log("pref insert error", error);
+  }
 }
 
 

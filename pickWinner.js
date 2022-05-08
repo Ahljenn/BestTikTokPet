@@ -119,28 +119,28 @@ function getRandomInt(max) {
 
 /* database operations */
 
-// gets preferences out of preference table
-async function getAllPrefs() {
-  const dumpCmd = "SELECT * from PrefTable";
+// // gets preferences out of preference table
+// async function getAllPrefs() {
+//   const dumpCmd = "SELECT * from PrefTable";
   
-  try {
-    let prefs = await db.all(dumpCmd);
-    return prefs;
-  } catch(err) {
-    console.log("pref dump error", err);
-  }
-}
+//   try {
+//     let prefs = await db.all(dumpCmd);
+//     return prefs;
+//   } catch(err) {
+//     console.log("pref dump error", err);
+//   }
+// }
 
-// inserts a preference into the database
-async function insertPreference(i,j) {
+// // inserts a preference into the database
+// async function insertPreference(i,j) {
 
-  // SQL command we'll need
-const insertCmd = "INSERT INTO PrefTable (better,worse) values (?, ?)";
+//   // SQL command we'll need
+// const insertCmd = "INSERT INTO PrefTable (better,worse) values (?, ?)";
   
-   try {
-    await db.run(insertCmd, [i,j]);
-  } catch(error) {
-    console.log("pref insert error", error);
-  }
-}
+//    try {
+//     await db.run(insertCmd, [i,j]);
+//   } catch(error) {
+//     console.log("pref insert error", error);
+//   }
+// }
 
