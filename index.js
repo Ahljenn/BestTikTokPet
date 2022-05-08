@@ -65,10 +65,6 @@ app.get("/getTwoVideos", async (req, res, next) => {
   res.json(twoVideos);
 });
 
-
-
-
-
 app.get("/getWinner", async function(req, res) {
   console.log("getting winner");
   try {
@@ -83,6 +79,17 @@ app.get("/getWinner", async function(req, res) {
     res.status(500).send(err);
   } 
 });
+
+//Send post request for user preference after selecting video
+app.post("/insertPref", async (req, res, next) => {
+  console.log("Server recieved POST request at /insertPref");
+  
+});
+
+
+
+
+
 
 
 // Page not found
