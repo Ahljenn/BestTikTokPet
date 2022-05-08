@@ -22,7 +22,6 @@ function getRandomInt(max) {
   return n;
 }
 
-
 /* start of code run on start-up */
 // create object to interface with express
 const app = express();
@@ -46,6 +45,30 @@ app.get("/", (request, response) => {
 // Get JSON out of HTTP request body, JSON.parse, and put object into req.body
 app.use(bodyParser.json());
 
+//Get two distinct random videos from VideoTable and sendback as an array in the HTTP response
+app.get("/getTwoVideos", async (req, res, next) => {
+
+  console.log("Server recieved GET request at /getTwoVideos");
+  
+  let videos = new Set();
+  console.log("Before:", videos);
+  while (videos.size != 2){
+      await getRandomVideo()
+      .then((result) => {
+        videos.add(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  console.log("After:", videos);
+  const twoVideos = Array.from(videos);
+  res.json(twoVideos);
+});
+
+
+
+
 
 app.get("/getWinner", async function(req, res) {
   console.log("getting winner");
@@ -59,7 +82,7 @@ app.get("/getWinner", async function(req, res) {
   res.json({});
   } catch(err) {
     res.status(500).send(err);
-  }
+  } 
 });
 
 
@@ -77,4 +100,10 @@ app.use(function(req, res){
 const listener = app.listen(3000, function () {
   console.log("The static server is listening on port " + listener.address().port);
 });
+
+async function getRandomVideo(){
+  const sql = `select * from VideoTable url order by RANDOM();`;
+  return await db.get(sql);
+}
+
 
