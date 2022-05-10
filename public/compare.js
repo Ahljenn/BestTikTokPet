@@ -6,6 +6,7 @@ let reloadButtons = document.getElementsByClassName("reload");
 let heartButtons = document.querySelectorAll("div.heart");
 let nextButton = document.getElementById("next");
 let urlData = [];
+
 for (let i=0; i<2; i++) {
   let reload = reloadButtons[i]; 
   reload.addEventListener("click", function() { 
@@ -67,7 +68,7 @@ nextButton.addEventListener("click", () => {
   let hasSelected = false;
   let ratings = {};
   heartButtons.forEach(heart => {
-    if(heart.className == "heart"){
+    if(heart.className == "heart loved"){
       hasSelected = true;
       // console.log(urlData);
       ratings.better = Number(urlData[heart.id].split('~')[1]);
