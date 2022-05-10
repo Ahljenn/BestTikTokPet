@@ -20,6 +20,18 @@ showWinningVideo()
 function showWinningVideo() {
   
   let winningUrl = "https://www.tiktok.com/@catcatbiubiubiu/video/6990180291545468166";
+
+
+  sendGetRequest("/getWinner")
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
+
+  
   addVideo(winningUrl, divElmt);
   loadTheVideos();
 }

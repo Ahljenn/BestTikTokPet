@@ -28,7 +28,7 @@ const app = express();
 
 
 /* Other constants */
-const MAX_PREF = 15;
+const MAX_PREF = 2;
 
 // Code in this section sets up an express pipeline
 
@@ -72,6 +72,12 @@ app.get("/getTwoVideos", async (req, res, next) => {
 
 //Send post request for user preference after selecting video
 app.post("/insertPref", async (req, res, next) => {
+
+  //Debugging:
+  let pref = await getAllPrefs();
+  console.log(pref);
+  //
+  
   console.log("Server recieved POST request at /insertPref");
   console.log("User ratings:", req.body);
   checkAndInsert(req.body)
@@ -85,14 +91,16 @@ app.post("/insertPref", async (req, res, next) => {
 });
 
 app.get("/getWinner", async function(req, res) {
-  console.log("getting winner");
+  console.log("Getting winner");
   try {
   // change parameter to "true" to get it to computer real winner based on PrefTable 
   // with parameter="false", it uses fake preferences data and gets a random result.
   // winner should contain the rowId of the winning video.
-  let winner = await win.computeWinner(8,false);
+  let winner = await win.computeWinner(8, true);
 
-  // you'll need to send back a more meaningful response here.
+  //Since winner is id, get the video corresponding to the rowid
+  //send back the html with that id
+    
   res.json({});
   } catch(err) {
     res.status(500).send(err);
@@ -121,7 +129,7 @@ async function getRandomVideo(){
 
 async function checkAndInsert(ratings){
   let prefTableContents = await getAllPrefs();
-  if (prefTableContents.length < MAX_PREF){
+  if (prefTableContents.length != MAX_PREF){
     await insertPreference(ratings.better, ratings.worse);
     return "Continue";
   } else {
