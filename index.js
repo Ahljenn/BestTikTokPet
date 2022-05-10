@@ -28,7 +28,7 @@ const app = express();
 
 
 /* Other constants */
-const MAX_PREF = 2;
+const MAX_PREF = 14;
 
 // Code in this section sets up an express pipeline
 
@@ -69,14 +69,12 @@ app.get("/getTwoVideos", async (req, res, next) => {
   res.json(twoVideos); //Return array with ~(rowIdNum) appended on each video
 });
 
-
 //Send post request for user preference after selecting video
 app.post("/insertPref", async (req, res, next) => {
 
   //Debugging:
   let pref = await getAllPrefs();
   console.log(pref);
-  //
   
   console.log("Server recieved POST request at /insertPref");
   console.log("User ratings:", req.body);
@@ -99,8 +97,13 @@ app.get("/getWinner", async function(req, res) {
 
   //Since winner is id, get the video corresponding to the rowid
   //send back the html with that id
-    
-  res.json({});
+  getVideoFromRow(winner)
+  .then((video) => {
+    res.json(video.url); //Send back the video url
+  })
+  .catch((err) => {
+    console.log("SQL error:", err);
+  })
   } catch(err) {
     res.status(500).send(err);
   } 
@@ -161,4 +164,8 @@ const insertCmd = "INSERT INTO PrefTable (better,worse) values (?, ?)";
   }
 }
 
-
+//Get video with corresponding rowidnum
+async function getVideoFromRow(rowNum){
+  const sql = "SELECT * FROM VideoTable where rowIdNum = ?";
+  return await db.get(sql, [rowNum]);
+}
