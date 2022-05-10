@@ -26,6 +26,10 @@ function getRandomInt(max) {
 // create object to interface with express
 const app = express();
 
+
+/* Other constants */
+const MAX_PREF = 15;
+
 // Code in this section sets up an express pipeline
 
 // print info about incoming HTTP request 
@@ -57,7 +61,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
         videos.add(result.url+"~"+result.rowIdNum);
       })
       .catch((err) => {
-        console.log(err);
+        res.status(500).send(err);
       });
   }
   console.log("Videos:", videos);
@@ -76,7 +80,7 @@ app.post("/insertPref", async (req, res, next) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+    res.status(500).send(err);
   });
 });
 
@@ -94,8 +98,6 @@ app.get("/getWinner", async function(req, res) {
     res.status(500).send(err);
   } 
 });
-
-
 
 // Page not found
 app.use(function(req, res){
@@ -119,7 +121,7 @@ async function getRandomVideo(){
 
 async function checkAndInsert(ratings){
   let prefTableContents = await getAllPrefs();
-  if (prefTableContents.length < 1){
+  if (prefTableContents.length < MAX_PREF){
     await insertPreference(ratings.better, ratings.worse);
     return "Continue";
   } else {

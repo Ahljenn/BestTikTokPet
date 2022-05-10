@@ -34,15 +34,29 @@ sendGetRequest("/getTwoVideos")
 heartButtons.forEach(heart => {
   heart.addEventListener("click", () => {
 
-    //Unlove the other video if it is already loved
-    if(heart.id == "0"){
-      document.getElementById("1").className = "heart unloved";
-    } else {
-      document.getElementById("0").className = "heart unloved";
-    }
+  //Unlove the other video if it is already loved
 
-    //Set clicked video to loved
-    heart.className = (heart.className == "heart") ? "heart unloved" : "heart";
+  console.log(heart.id);
+  if(heart.id == "0"){
+    document.getElementById("1").className = "heart unloved";
+    document.getElementById("1").firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
+  } else {
+    document.getElementById("0").className = "heart unloved";
+    document.getElementById("0").firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
+  }
+    
+  //Set clicked video to loved
+  //far = outline, fas = filled
+  if (heart.className == "heart"){
+    heart.className = "heart unloved";
+    heart.firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
+  } else {
+    heart.className = "heart loved";
+    heart.firstChild.setAttribute("data-prefix", "fas"); 
+  }
+
+  // (heart.className == "heart") ? "heart unloved" : "heart";
+    
   });
 });
 
@@ -62,7 +76,6 @@ nextButton.addEventListener("click", () => {
   });
 
   // console.log(ratings);
-
 
   //User must select before continuing
   if(!hasSelected){
