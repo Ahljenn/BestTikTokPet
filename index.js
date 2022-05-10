@@ -93,10 +93,9 @@ app.post("/insertPref", async (req, res, next) => {
 app.get("/getWinner", async function(req, res) {
   console.log("Getting winner");
   try {
-  // change parameter to "true" to get it to computer real winner based on PrefTable 
-  // with parameter="false", it uses fake preferences data and gets a random result.
+
   // winner should contain the rowId of the winning video.
-  let winner = await win.computeWinner(8, true);
+  let winner = await win.computeWinner(8, false);
 
   //Since winner is id, get the video corresponding to the rowid
   //send back the html with that id
