@@ -20,12 +20,12 @@ for (let i=0; i<2; i++) {
 sendGetRequest("/getTwoVideos")
 .then((result) => {
   for (let i=0; i<2; i++) {
-    addVideo(result[i].split('~>')[0], videoElmts[i]);
+    addVideo(result[i].url, videoElmts[i]);
     urlData.push(result[i]);
     let video = document.getElementById(`vid-${i}`);
     let textField = document.createElement("h2");
     textField.id = "caption";
-    textField.textContent = result[i].split('>^')[1];
+    textField.textContent = result[i].nickname;
     video.append(textField);
   }
   
@@ -63,19 +63,18 @@ heartButtons.forEach(heart => {
 nextButton.addEventListener("click", () => {
 
   //User should not be able to click next if none of them are of class "heart"
-
   let hasSelected = false;
   let ratings = {};
   heartButtons.forEach(heart => {
     if(heart.className == "heart loved"){
       hasSelected = true;
       console.log(urlData);
-      ratings.better = Number(urlData[heart.id].split('~>')[1].split('>^')[0]);
-      ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~>')[1].split('>^')[0]); //BITWISE NOT
+      ratings.better = Number(urlData[heart.id].row);
+      ratings.worse = Number(urlData[Math.abs(~-heart.id)].row); //BITWISE NOT
+      // ratings.better = Number(urlData[heart.id].split('~>')[1].split('>^')[0]);
+      // ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~>')[1].split('>^')[0]);
     } 
   });
-
-  // console.log(ratings);
 
   //User must select before continuing
   if(!hasSelected){
