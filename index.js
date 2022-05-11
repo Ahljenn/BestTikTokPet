@@ -28,7 +28,7 @@ const app = express();
 
 
 /* Other constants */
-const MAX_PREF = 14;
+const MAX_PREF = 1;
 
 // Code in this section sets up an express pipeline
 
@@ -58,7 +58,7 @@ app.get("/getTwoVideos", async (req, res, next) => {
   while (videos.size != 2){
       await getRandomVideo()
       .then((result) => {
-        videos.add(result.url+"~"+result.rowIdNum);
+        videos.add(result.url+"~>"+result.rowIdNum+">^"+result.nickname);
       })
       .catch((err) => {
         res.status(500).send(err);
@@ -99,7 +99,7 @@ app.get("/getWinner", async function(req, res) {
   //send back the html with that id
   getVideoFromRow(winner)
   .then((video) => {
-    res.json(video.url); //Send back the video url
+    res.json({url: video.url, nickname: video.nickname}); //Send back the video url
   })
   .catch((err) => {
     console.log("SQL error:", err);

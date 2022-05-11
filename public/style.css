@@ -64,6 +64,10 @@ h2 {
     text-align: center;
 }
 
+#caption {
+    color: white;
+}
+
 span {
     color: var(--magenta);
 }

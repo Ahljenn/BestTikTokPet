@@ -20,7 +20,12 @@ showWinningVideo()
 function showWinningVideo() {
   sendGetRequest("/getWinner")
   .then((result) => {
-    addVideo(result, divElmt);
+    addVideo(result.url, divElmt);
+    let video = document.getElementById("tiktokDiv");
+    let textField = document.createElement("h2");
+    textField.id = "caption";
+    textField.textContent = result.nickname;
+    video.append(textField);
     loadTheVideos();
   })
   .catch((err) => {

@@ -20,8 +20,13 @@ for (let i=0; i<2; i++) {
 sendGetRequest("/getTwoVideos")
 .then((result) => {
   for (let i=0; i<2; i++) {
-    addVideo(result[i].split('~')[0], videoElmts[i]);
+    addVideo(result[i].split('~>')[0], videoElmts[i]);
     urlData.push(result[i]);
+    let video = document.getElementById(`vid-${i}`);
+    let textField = document.createElement("h2");
+    textField.id = "caption";
+    textField.textContent = result[i].split('>^')[1];
+    video.append(textField);
   }
   
   // load the videos after the names are pasted in! 
@@ -36,28 +41,22 @@ heartButtons.forEach(heart => {
   heart.addEventListener("click", () => {
 
   //Unlove the other video if it is already loved
-
-  console.log(heart.id);
   if(heart.id == "0"){
     document.getElementById("1").className = "heart unloved";
-    document.getElementById("1").firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
+    document.getElementById("1").firstChild.setAttribute("data-prefix", "far");
   } else {
     document.getElementById("0").className = "heart unloved";
-    document.getElementById("0").firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
+    document.getElementById("0").firstChild.setAttribute("data-prefix", "far");
   }
     
   //Set clicked video to loved
-  //far = outline, fas = filled
   if (heart.className == "heart"){
     heart.className = "heart unloved";
     heart.firstChild.setAttribute("data-prefix", "far"); //Get child of heart 
   } else {
     heart.className = "heart loved";
     heart.firstChild.setAttribute("data-prefix", "fas"); 
-  }
-
-  // (heart.className == "heart") ? "heart unloved" : "heart";
-    
+  } 
   });
 });
 
@@ -70,9 +69,9 @@ nextButton.addEventListener("click", () => {
   heartButtons.forEach(heart => {
     if(heart.className == "heart loved"){
       hasSelected = true;
-      // console.log(urlData);
-      ratings.better = Number(urlData[heart.id].split('~')[1]);
-      ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~')[1]); //BITWISE NOT
+      console.log(urlData);
+      ratings.better = Number(urlData[heart.id].split('~>')[1].split('>^')[0]);
+      ratings.worse = Number(urlData[Math.abs(~-heart.id)].split('~>')[1].split('>^')[0]); //BITWISE NOT
     } 
   });
 
