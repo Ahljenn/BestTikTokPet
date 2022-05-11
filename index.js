@@ -28,7 +28,7 @@ const app = express();
 
 
 /* Other constants */
-const MAX_PREF = 1;
+const MAX_PREF = 14;
 
 // Code in this section sets up an express pipeline
 
