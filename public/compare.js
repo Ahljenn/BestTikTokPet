@@ -7,26 +7,19 @@ let heartButtons = document.querySelectorAll("div.heart");
 let nextButton = document.getElementById("next");
 let urlData = [];
 
-for (let i=0; i<2; i++) {
-  let reload = reloadButtons[i]; 
-  reload.addEventListener("click", function() { 
-    reloadVideo(videoElmts[i]) 
-  });
-  heartButtons[i].classList.add("unloved");
-  heartButtons[i].id = i;
-} 
-
 //Get the videos on load
 sendGetRequest("/getTwoVideos")
 .then((result) => {
   for (let i=0; i<2; i++) {
-    addVideo(result[i].split('~>')[0], videoElmts[i]);
+    addVideo(result[i].split('~>')[0], videoElmts[i], result[i].split('>^')[1]);
     urlData.push(result[i]);
-    let video = document.getElementById(`vid-${i}`);
-    let textField = document.createElement("h2");
-    textField.id = "caption";
-    textField.textContent = result[i].split('>^')[1];
-    video.append(textField);
+
+    //Add text content to video:
+    // let video = document.getElementById(`vid-${i}`);
+    // let textField = document.createElement("h2");
+    // textField.id = "caption";
+    // textField.textContent = result[i].split('>^')[1];
+    // video.append(textField);
   }
   
   // load the videos after the names are pasted in! 
@@ -35,6 +28,17 @@ sendGetRequest("/getTwoVideos")
 .catch((err) => {
   console.log(err);
 });
+
+
+for (let i=0; i<2; i++) {
+  let reload = reloadButtons[i]; 
+  reload.addEventListener("click", function() { 
+    reloadVideo(videoElmts[i]);
+  });
+  heartButtons[i].classList.add("unloved");
+  heartButtons[i].id = i;
+} 
+
 
 //Add functionality for each heart button
 heartButtons.forEach(heart => {

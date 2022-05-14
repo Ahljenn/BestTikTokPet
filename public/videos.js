@@ -1,7 +1,7 @@
 /* Functions for handling tiktok videos */
 
 // Add the blockquote element that tiktok will load the video into the given div
-async function addVideo(tiktokurl,divElmt) {
+async function addVideo(tiktokurl,divElmt,videoName) {
   let videoNumber = tiktokurl.split("video/")[1];
 
   let block = document.createElement('blockquote');
@@ -13,8 +13,12 @@ async function addVideo(tiktokurl,divElmt) {
 
   let section = document.createElement('section');
   block.appendChild(section);
-  
   divElmt.appendChild(block);
+
+  let textField = document.createElement("h2");
+  textField.id = "caption";
+  textField.textContent = videoName;
+  divElmt.append(textField);
 }
 
 // Ye olde JSONP trick; to run the script, attach it to the body
@@ -38,11 +42,19 @@ function newTikTokScript() {
 function reloadVideo (divElmt) {
   
   // get the blockquote in the divElmt
-    let block = divElmt.getElementsByClassName("tiktok-embed")[0];
-    // and remove it
-    console.log("block",block);
-    let parent = block.parentNode;
-    parent.removeChild(block);
+  let block = divElmt.getElementsByClassName("tiktok-embed")[0];
+
+  // and remove it
+  console.log("block",block);
+  let parent = block.parentNode;
+  parent.removeChild(block);
+
+  //Remove text
+  let fieldText = divElmt.childNodes[0];
+  let tempText = fieldText.textContent;
+  console.log(fieldText);
+  fieldText.remove(fieldText);
+  
 
   // remove both the script we put in and the
   // one tiktok adds in
@@ -53,7 +65,7 @@ function reloadVideo (divElmt) {
   body.removeChild(script1);
   body.removeChild(script2);
 
-  addVideo(block.cite, divElmt);
+  addVideo(block.cite, divElmt, tempText);
   loadTheVideos();
 }
 
