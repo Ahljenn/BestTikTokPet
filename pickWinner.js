@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /*********** 
 This module provides one method, computeWinner(n,testing).
