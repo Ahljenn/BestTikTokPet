@@ -28,7 +28,7 @@ const app = express();
 
 
 /* Other constants */
-const MAX_PREF = 14;
+const MAX_PREF = 15;
 
 // Code in this section sets up an express pipeline
 
@@ -131,7 +131,7 @@ async function getRandomVideo(){
 
 async function checkAndInsert(ratings){
   let prefTableContents = await getAllPrefs();
-  if (prefTableContents.length != MAX_PREF){
+  if (prefTableContents.length + 1 < MAX_PREF){
     await insertPreference(ratings.better, ratings.worse);
     return "Continue";
   } else {
@@ -142,7 +142,6 @@ async function checkAndInsert(ratings){
 // gets preferences out of preference table
 async function getAllPrefs() {
   const dumpCmd = "SELECT * from PrefTable";
-  
   try {
     let prefs = await db.all(dumpCmd);
     return prefs;
