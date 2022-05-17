@@ -126,6 +126,9 @@ iframe {
   margin-right: 20px;
 }
 
+.reload {
+  transform: rotate(45deg) scaleX(-1);
+}
 
 
 
